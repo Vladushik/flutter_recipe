@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:flutter_recipe/features/recipe_item/presentation/pages/recipe_item_page.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_bloc.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_state.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/loading_widget.dart';
@@ -13,16 +15,14 @@ class RecipesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Similar Data'),
+        title: Text('Recipes'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.bookmark),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RecipesPage()),
-              );
-            },
+          PopupMenuButton<int>(
+            onSelected: (item) => onSelected(context, item),
+            itemBuilder: (context) => [
+              PopupMenuItem(value: 0, child: Text('History')),
+              PopupMenuItem(value: 1, child: Text('About')),
+            ],
           ),
         ],
       ),
@@ -45,17 +45,13 @@ class RecipesPage extends StatelessWidget {
               BlocBuilder<RecipesBloc, RecipesState>(
                 builder: (context, state) {
                   if (state is Empty) {
-                    return MessageDisplay(
-                      message: 'Empty',
-                    );
+                    return MessageDisplay(message: 'Empty');
                   } else if (state is Loading) {
                     return LoadingWidget();
                   } else if (state is Loaded) {
                     return RecipesDisplay(datum: state.datum);
                   } else if (state is Error) {
-                    return MessageDisplay(
-                      message: state.message,
-                    );
+                    return MessageDisplay(message: state.message);
                   }
                   return MessageDisplay(message: 'Error');
                 },
@@ -65,5 +61,22 @@ class RecipesPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+void onSelected(BuildContext context, int item) {
+  switch (item) {
+    case 0:
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RecipesItemPage()),
+      );
+      break;
+    case 1:
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RecipesItemPage()),
+      );
+      break;
   }
 }

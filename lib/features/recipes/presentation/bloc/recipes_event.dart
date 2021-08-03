@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -16,4 +17,13 @@ class GetRecipesData extends RecipesEvent {
 
   @override
   List<Object> get props => [nameString];
+}
+
+
+class SaveRecipesData extends RecipesEvent {
+
+  final List<Datum> list;
+
+  SaveRecipesData({required this.list});
+
 }

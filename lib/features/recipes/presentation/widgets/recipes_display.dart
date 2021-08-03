@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe/features/recipe_item/presentation/pages/recipe_item_page.dart';
 import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
-
 
 class RecipesDisplay extends StatelessWidget {
   final Datum datum;
 
-  const RecipesDisplay({
+  RecipesDisplay({
     Key? key,
     required this.datum,
   }) : super(key: key);
@@ -19,9 +19,18 @@ class RecipesDisplay extends StatelessWidget {
           child: ListView.builder(
             itemCount: datum.hits.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(datum.hits[index].recipe.label),
-               // subtitle: Text(datum.similar.results[index].type),
+              return InkWell(
+                child: ListTile(
+                  leading: Image.network(datum.hits[index].recipe.image),
+                  title: Text(datum.hits[index].recipe.label),
+                  subtitle: Text(datum.hits[index].recipe.calories.toString()),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecipesItemPage()),
+                  );
+                },
               );
             },
           ),
@@ -29,8 +38,4 @@ class RecipesDisplay extends StatelessWidget {
       ],
     );
   }
-
-
-
-
 }

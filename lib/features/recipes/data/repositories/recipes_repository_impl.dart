@@ -6,14 +6,8 @@ import 'package:flutter_recipe/features/recipes/domain/repositories/recipes_repo
 
 class RecipesRepositoryImpl implements RecipesRepository {
   final RecipesRemoteDataSource remoteDataSource;
-//  final SimilarLocalDataSource localDataSource;
-//  final NetworkInfo networkInfo;
 
-  RecipesRepositoryImpl({
-    required this.remoteDataSource,
-    // required this.localDataSource,
-    //  required this.networkInfo,
-  });
+  RecipesRepositoryImpl({required this.remoteDataSource});
 
   @override
   Future<Datum> getRecipes(String name) async {
@@ -23,18 +17,10 @@ class RecipesRepositoryImpl implements RecipesRepository {
     } on ServerException {
       throw ServerFailure();
     }
+  }
 
-    //   if (await networkInfo.isConnected) {
-    //     try {
-    //       final DatumModel remoteSimilar =
-    //       await remoteDataSource.getSimilar(name);
-    //       localDataSource.saveToDatabase(remoteSimilar);
-    //       return remoteSimilar;
-    //     } on ServerException {
-    //       throw ServerFailure();
-    //     }
-    //   } else {
-    //     throw CacheFailure();
-    //   }
+  @override
+  Future<void> saveRecipes(List<Datum> datum) async {
+   await remoteDataSource.saveRecipes(datum);
   }
 }

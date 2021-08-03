@@ -30,3 +30,11 @@ class Error extends RecipesState {
   @override
   List<Object> get props => [message];
 }
+
+class Saved extends RecipesState {
+  final Datum datum;
+
+  Saved({required this.datum});
+  @override
+  List<Object> get props => [datum];
+}
