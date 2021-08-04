@@ -20,7 +20,7 @@ class RecipesRepositoryImpl implements RecipesRepository {
   }
 
   @override
-  Future<void> saveRecipes(List<Datum> datum) async {
+  Future<void> saveRecipes(Datum datum) async {
    await remoteDataSource.saveRecipes(datum);
   }
 }

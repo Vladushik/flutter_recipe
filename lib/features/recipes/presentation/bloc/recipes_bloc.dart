@@ -9,7 +9,7 @@ class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
   final GetRecipes getRecipes;
   final SaveRecipes saveRecipes;
 
-  RecipesBloc(this.getRecipes, this.saveRecipes) : super(Empty());
+  RecipesBloc({ required this.getRecipes, required this.saveRecipes}) : super(Empty());
 
   @override
   Stream<RecipesState> mapEventToState(RecipesEvent event) async* {

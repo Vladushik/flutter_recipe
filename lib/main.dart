@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/features/recipes/presentation/pages/recipes_page.dart';
+import 'features/recipes/presentation/bloc/recipes_bloc.dart';
 import 'injection_container.dart' as di;
+import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,8 +19,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: RecipesPage(),
-    );
+        home: BlocProvider<RecipesBloc>(
+            create: (_) => sl<RecipesBloc>(), child: RecipesPage()));
   }
 }
 

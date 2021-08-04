@@ -2,5 +2,5 @@ import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 
 abstract class RecipesRepository {
   Future<Datum> getRecipes(String name);
-  Future<void> saveRecipes(List<Datum> datum);
+  Future<void> saveRecipes(Datum datum);
 }

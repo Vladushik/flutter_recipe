@@ -3,16 +3,13 @@ import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 import 'package:flutter_recipe/features/recipes/domain/repositories/recipes_repository.dart';
 import 'package:flutter_recipe/features/recipes/domain/usecases/get_recipes.dart';
 
-class SaveRecipes implements UseCase<void, List<Datum>> {
+class SaveRecipes implements UseCase<void, Datum> {
   final RecipesRepository repository;
 
   SaveRecipes(this.repository);
 
   @override
-  Future<void> call(List<Datum> datum) async {
+  Future<void> call(Datum datum) async {
     await repository.saveRecipes(datum);
   }
-
-
-
 }

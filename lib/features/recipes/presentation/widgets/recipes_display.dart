@@ -15,20 +15,27 @@ class RecipesDisplay extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height / 1.5,
+          height: MediaQuery.of(context).size.height / 1.4,
           child: ListView.builder(
             itemCount: datum.hits.length,
             itemBuilder: (context, index) {
               return InkWell(
                 child: ListTile(
-                  leading: Image.network(datum.hits[index].recipe.image),
+                  leading: Image.network(
+                    datum.hits[index].recipe.image,
+                    errorBuilder: (context, object, trace) {
+                      return Image.asset('assets/images/splash_image.jpg');
+                    },
+                  ),
                   title: Text(datum.hits[index].recipe.label),
                   subtitle: Text(datum.hits[index].recipe.calories.toString()),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RecipesItemPage()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            RecipesItemPage(hit: datum.hits[index])),
                   );
                 },
               );

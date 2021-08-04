@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:flutter_recipe/features/recipe_item/presentation/pages/recipe_item_page.dart';
+import 'package:flutter_recipe/features/history/presentation/pages/history_page.dart';
+import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_bloc.dart';
+import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_event.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_state.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/loading_widget.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/message_display.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/recipes_controls.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/recipes_display.dart';
-import 'package:flutter_recipe/injection_container.dart';
 
 class RecipesPage extends StatelessWidget {
+  Datum datum = Datum(hits: []);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,35 +31,42 @@ class RecipesPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: buildBody(context),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          BlocProvider.of<RecipesBloc>(context)
+              .add(SaveRecipesData(list: datum));
+          final snackBar = SnackBar(content: const Text('Data saved'));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        child: Icon(Icons.save),
+      ),
     );
   }
 
-  BlocProvider<RecipesBloc> buildBody(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<RecipesBloc>(),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: <Widget>[
-              RecipesControls(),
-              SizedBox(height: 10),
-              BlocBuilder<RecipesBloc, RecipesState>(
-                builder: (context, state) {
-                  if (state is Empty) {
-                    return MessageDisplay(message: 'Empty');
-                  } else if (state is Loading) {
-                    return LoadingWidget();
-                  } else if (state is Loaded) {
-                    return RecipesDisplay(datum: state.datum);
-                  } else if (state is Error) {
-                    return MessageDisplay(message: state.message);
-                  }
-                  return MessageDisplay(message: 'Error');
-                },
-              ),
-            ],
-          ),
+  Widget buildBody(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            RecipesControls(),
+            SizedBox(height: 10),
+            BlocBuilder<RecipesBloc, RecipesState>(
+              builder: (context, state) {
+                if (state is Empty) {
+                  return MessageDisplay(message: 'Empty');
+                } else if (state is Loading) {
+                  return LoadingWidget();
+                } else if (state is Loaded) {
+                  datum = state.datum;
+                  return RecipesDisplay(datum: state.datum);
+                } else if (state is Error) {
+                  return MessageDisplay(message: state.message);
+                }
+                return MessageDisplay(message: 'Errorka');
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -69,13 +78,13 @@ void onSelected(BuildContext context, int item) {
     case 0:
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RecipesItemPage()),
+        MaterialPageRoute(builder: (context) => HistoryPage()),
       );
       break;
     case 1:
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RecipesItemPage()),
+        MaterialPageRoute(builder: (context) => HistoryPage()),
       );
       break;
   }

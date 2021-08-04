@@ -19,11 +19,8 @@ class GetRecipesData extends RecipesEvent {
   List<Object> get props => [nameString];
 }
 
-
 class SaveRecipesData extends RecipesEvent {
-
-  final List<Datum> list;
+  final Datum list;
 
   SaveRecipesData({required this.list});
-
 }

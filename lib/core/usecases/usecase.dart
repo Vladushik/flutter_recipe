@@ -5,3 +5,7 @@ abstract class UseCase<Type, Params> {
 abstract class SaveRecipesUseCase<Type> {
   Future<void> saveRecipes(Type type);
 }
+
+abstract class HistoryUseCase<RecipeItem> {
+  Future<List<RecipeItem>> readRecipes();
+}

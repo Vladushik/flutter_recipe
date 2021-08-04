@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_recipe/core/database/recipe.dart';
 import 'package:flutter_recipe/core/error/exceptions.dart';
 import 'package:flutter_recipe/features/recipes/data/models/datum_model.dart';
 import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
@@ -8,7 +9,8 @@ import 'package:http/http.dart' as http;
 
 abstract class RecipesRemoteDataSource {
   Future<DatumModel> getRecipes(String name);
-  Future<void> saveRecipes(List<Datum> datum);
+  Future<void> saveRecipes(Datum datum);
+  Future<List<RecipeItem>> readRecipes();
 }
 
 class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
@@ -38,27 +40,43 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     }
   }
 
-  // Future<List<Recipe>> readAllRecipes() async {}
+  Future<void> saveRecipes(Datum datum) async {
+    await Firebase.initializeApp();
+    await deleteAllDocuments();
+    CollectionReference recipe =
+        FirebaseFirestore.instance.collection('Recipes');
+    datum.hits.forEach((element) {
+      recipe.add(element.recipe.toDB());
+    });
 
-  Future<void> saveRecipes(List<Datum> datum) async {
-    print('hello from SAVE to DB');
-    // CollectionReference recipe =
-    //    FirebaseFirestore.instance.collection('Recipes');
-    // recipe.add({'label': 'label123'});
-    // return;
+    return;
+  }
+
+  Future<void> deleteAllDocuments() async {
+    final db = await FirebaseFirestore.instance.collection('Recipes').get();
+    db.docs.forEach((element) {
+      element.reference.delete();
+    });
+    return;
+  }
+
+  @override
+  Future<List<RecipeItem>> readRecipes() async {
+    await Firebase.initializeApp();
+    final db = await FirebaseFirestore.instance.collection('Recipes').get();
+
+    final result = await db.docs;
+    final temp = [];
+    result.forEach((element) {
+      temp.add(element.data());
+    });
+
+    print(temp);
+
+    return temp.map((json) => RecipeItem.fromDB(json)).toList();
+
+    // db.docs.forEach((element) {
+    //  return element.reference;
+    // });
   }
 }
-
-// Future<void> saveToDatabase(Datum datum) async {
-//   _clearDatabase();
-//   for (var item in datum.similar.results) {
-//     var author = Author(name: item.name, type: item.type);
-//     await _insertAuthorToDatabase(author);
-//   }
-// }
-//
-// Future<Author> _insertAuthorToDatabase(Author author) async {
-//   final Database db = await AuthorsDatabase.instance.database;
-//   final int id = await db.insert(tableAuthors, author.toJson());
-//   return author.copy(id: id);
-// }
