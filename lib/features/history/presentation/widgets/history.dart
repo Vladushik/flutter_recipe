@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_recipe/features/history/presentation/bloc/history_state.dart';
+import 'package:flutter_recipe/features/recipe_item/presentation/pages/recipe_item_page.dart';
 
 class History extends StatelessWidget {
   @override
@@ -16,26 +17,41 @@ class History extends StatelessWidget {
         }
         if (state is HistoryLoadedState) {
           return ListView.builder(
-            itemCount: state.recipes.length,
-            itemBuilder: (context, index) => Container(
-              child: Card(
-                color: Colors.grey[200],
-                child: Container(
-                  constraints: BoxConstraints(minHeight: 70),
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${state.recipes[index].label}'),
-                      SizedBox(height: 5),
-                      //Text('${state.recipes[index].type}'),
-                    ],
+              itemCount: state.recipes.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    // Navigator.push(
+                    // context,
+                    // MaterialPageRoute(
+                    // builder: (context) =>
+                    // RecipesItemPage(hit: state.recipes[index])),
+                    //);
+                  },
+                  child: ListTile(
+                    title: Text('${state.recipes[index].label}'),
                   ),
-                ),
-              ),
-            ),
-          );
+                );
+
+                // return Container(
+                //   child: Card(
+                //     color: Colors.grey[200],
+                //     child: Container(
+                //       constraints: BoxConstraints(minHeight: 70),
+                //       padding: EdgeInsets.all(8),
+                //       child: Column(
+                //         mainAxisSize: MainAxisSize.min,
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text('${state.recipes[index].label}'),
+                //           SizedBox(height: 5),
+                //           //Text('${state.recipes[index].type}'),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // );
+              });
         }
 
         if (state is HistoryErrorState) {

@@ -24,7 +24,10 @@ class RecipesDisplay extends StatelessWidget {
                   leading: Image.network(
                     datum.hits[index].recipe.image,
                     errorBuilder: (context, object, trace) {
-                      return Image.asset('assets/images/splash_image.jpg');
+                      return Hero(
+                        tag: datum.hits[index],
+                        child: Image.asset('assets/images/splash_image.jpg'),
+                      );
                     },
                   ),
                   title: Text(datum.hits[index].recipe.label),

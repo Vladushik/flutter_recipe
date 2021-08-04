@@ -22,9 +22,12 @@ class RecipesItemPage extends StatelessWidget {
             expandedHeight: 250,
             stretch: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                hit.recipe.image,
-                fit: BoxFit.cover,
+              background: Hero(
+                tag: hit,
+                child: Image.network(
+                  hit.recipe.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
