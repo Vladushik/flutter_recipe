@@ -9,7 +9,6 @@ class SaveRecipes implements UseCase<void, Datum> {
 
   @override
   Future<void> call(Datum datum) async {
-    print('asdsadfvvvv');
     await repository.saveRecipes(datum);
   }
 }

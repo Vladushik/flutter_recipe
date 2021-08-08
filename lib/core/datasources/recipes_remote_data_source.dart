@@ -72,8 +72,6 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
       temp.add(element.data());
     });
 
-    print(temp[0]);
-
     return temp.map((e) => RecipeItem.fromDB(e)).toList();
 
     // db.docs.forEach((element) {

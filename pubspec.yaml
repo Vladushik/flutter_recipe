@@ -55,6 +55,8 @@ flutter:
 
   assets:
     - assets/images/splash_image.jpg
+    - assets/images/facebook.jpg
+    - assets/images/google.jpg
     - assets/translations/
 
 

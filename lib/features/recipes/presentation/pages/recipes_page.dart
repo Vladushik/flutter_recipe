@@ -7,12 +7,12 @@ import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_bloc.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_event.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_state.dart';
+import 'package:flutter_recipe/features/recipes/presentation/widgets/app_version.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/loading_widget.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/message_display.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/recipes_controls.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/recipes_display.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:http/http.dart';
 
 class RecipesPage extends StatelessWidget {
   Datum datum = Datum(hits: []);
@@ -98,8 +98,7 @@ Future<String> getAppVersion() async {
     appVersion = "Failed to get app version: '${e.message}'.";
   }
   _appVersion = appVersion;
-  print(_appVersion);
-  // print("aaaaappppppppppp vvvvveeeeeeerrrrrrrrrssssssssiiiiiiooooonnnnnn");
+
   return (_appVersion);
 }
 
@@ -112,19 +111,24 @@ void onSelected(BuildContext context, int item) {
       );
       break;
     case 1:
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text('App Version'),
-          content: Text('1.0.0'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: Text('OK'),
-            ),
-          ],
-        ),
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AppVersionPage()),
       );
+
+      // showDialog<String>(
+      //   context: context,
+      //   builder: (BuildContext context) => AlertDialog(
+      //     title: Text('App Version'),
+      //     content: Text('1.0.0'),
+      //     actions: <Widget>[
+      //       TextButton(
+      //         onPressed: () => Navigator.pop(context, 'OK'),
+      //         child: Text('OK'),
+      //       ),
+      //     ],
+      //   ),
+      // );
       break;
   }
 }

@@ -37,8 +37,6 @@ class RecipesRepositoryImpl implements RecipesRepository {
     //   appVersion = "Failed to get app version: '${e.message}'.";
     // }
     // _appVersion = appVersion;
-    //  print(_appVersion);
-    // print("aaaaappppppppppp vvvvveeeeeeerrrrrrrrrssssssssiiiiiiooooonnnnnn");
     //   return (_appVersion);
   }
 }

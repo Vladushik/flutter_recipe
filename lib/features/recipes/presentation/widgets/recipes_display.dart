@@ -19,14 +19,14 @@ class RecipesDisplay extends StatelessWidget {
               return InkWell(
                 child: Card(
                   child: ListTile(
-                    leading: Image.network(
-                      datum.hits[index].recipe.image,
-                      errorBuilder: (context, object, trace) {
-                        return Hero(
-                          tag: datum.hits[index],
-                          child: Image.asset('assets/images/splash_image.jpg'),
-                        );
-                      },
+                    leading: Hero(
+                      tag: datum.hits[index],
+                      child: Image.network(
+                        datum.hits[index].recipe.image,
+                        errorBuilder: (context, object, trace) {
+                          return Image.asset('assets/images/splash_image.jpg');
+                        },
+                      ),
                     ),
                     title: Text(datum.hits[index].recipe.label),
                     subtitle: Text(

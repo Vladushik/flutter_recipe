@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_recipe/features/history/presentation/bloc/history_state.dart';
+import 'package:flutter_recipe/features/recipe_item/presentation/pages/history_item_page.dart';
 
 class History extends StatelessWidget {
   @override
@@ -23,25 +24,25 @@ class History extends StatelessWidget {
                   child: ListTile(
                     title: Text('${state.recipes[index].label}'),
                     subtitle: Text('${state.recipes[index].calories}'),
-                    leading: Image.network(
-                      '${state.recipes[index].image}',
-                      errorBuilder: (context, object, trace) {
-                        return Hero(
-                          tag: 'a',
-                          child: Image.asset('assets/images/splash_image.jpg'),
-                        );
-                      },
+                    leading: Hero(
+                      tag: state.recipes[index],
+                      child: Image.network(
+                        '${state.recipes[index].image}',
+                        errorBuilder: (context, object, trace) {
+                          return Image.asset('assets/images/splash_image.jpg');
+                        },
+                      ),
                     ),
                   ),
                 ),
-                // onTap: () {
-                //   Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //   builder: (context) =>
-                //   RecipesItemPage(hit: '${state.recipes[index]}')),
-                //   );
-                // },
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            HistoryItemPage(recipeItem: state.recipes[index])),
+                  );
+                },
               );
             },
           );

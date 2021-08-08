@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_recipe/features/auth/presentation/pages/login_page.dart';
 
 import 'package:flutter_recipe/features/recipes/presentation/pages/recipes_page.dart';
 import 'features/recipes/presentation/bloc/recipes_bloc.dart';
@@ -43,9 +44,10 @@ class MyApp extends StatelessWidget {
 
 //TODO: 1. Lottie animation Splash Screen
 //TODO: 2. Calories Main Screen Sort
-//TODO: 3. Hero main page -> item page
 //TODO: 4. About -> app version -> channels
-//TODO: 5. Without internet connection   - Hide Save btn - Show Dialog or SnackBar “No internet connection” +
 //TODO: 6. History -> item page
 
+//TODO: 5. Without internet connection   - Hide Save btn - Show Dialog or SnackBar “No internet connection” +
+
+//TODO: 3. Hero main page -> item page +
 //TODO: 7. Localization +
