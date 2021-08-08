@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_recipe/core/datasources/recipes_remote_data_source.dart';
 import 'package:flutter_recipe/core/error/exceptions.dart';
 import 'package:flutter_recipe/core/error/failures.dart';
@@ -21,6 +22,23 @@ class RecipesRepositoryImpl implements RecipesRepository {
 
   @override
   Future<void> saveRecipes(Datum datum) async {
-   await remoteDataSource.saveRecipes(datum);
+    await remoteDataSource.saveRecipes(datum);
+  }
+
+  Future<void> getAppVersion() async {
+    // String _appVersion = 'Unknown app version.';
+    // String appVersion;
+    // try {
+    //   final String result =
+    //       await MethodChannel('samples.flutter.dev/app_version')
+    //           .invokeMethod('getAppVersion');
+    //   appVersion = 'App version $result';
+    // } on PlatformException catch (e) {
+    //   appVersion = "Failed to get app version: '${e.message}'.";
+    // }
+    // _appVersion = appVersion;
+    //  print(_appVersion);
+    // print("aaaaappppppppppp vvvvveeeeeeerrrrrrrrrssssssssiiiiiiooooonnnnnn");
+    //   return (_appVersion);
   }
 }

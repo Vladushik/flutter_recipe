@@ -12,9 +12,6 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   }
 
   @override
-  HistoryState get initialState => HistoryEmptyState();
-
-  @override
   Stream<HistoryState> mapEventToState(HistoryEvent event) async* {
     if (event is HistoryReadAllRecipesEvent) {
       yield HistoryLoadingState();

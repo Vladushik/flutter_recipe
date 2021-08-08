@@ -5,6 +5,7 @@ import 'package:flutter_recipe/features/history/domain/usecases/read_recipes.dar
 import 'package:flutter_recipe/features/history/presentation/bloc/history_bloc.dart';
 import 'package:flutter_recipe/features/recipes/data/repositories/recipes_repository_impl.dart';
 import 'package:flutter_recipe/features/recipes/domain/repositories/recipes_repository.dart';
+
 import 'package:flutter_recipe/features/recipes/domain/usecases/get_recipes.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -15,11 +16,15 @@ import 'features/recipes/domain/usecases/save_recipes.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  sl.registerFactory(() => RecipesBloc(getRecipes: sl(), saveRecipes: sl()));
+  sl.registerFactory(() => RecipesBloc(
+        getRecipes: sl(),
+        saveRecipes: sl(),
+      ));
 
   // Use case
   sl.registerLazySingleton(() => GetRecipes(sl()));
   sl.registerLazySingleton(() => SaveRecipes(sl()));
+
   // Repo
   sl.registerLazySingleton<RecipesRepository>(
     () => RecipesRepositoryImpl(

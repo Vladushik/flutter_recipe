@@ -21,7 +21,6 @@ class Recipe {
   final String label;
   final String image;
   final List<String> ingredientLines;
-
   final double calories;
 
   Map<String, dynamic> toDB() => {

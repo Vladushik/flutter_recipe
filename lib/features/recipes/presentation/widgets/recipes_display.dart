@@ -5,10 +5,7 @@ import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 class RecipesDisplay extends StatelessWidget {
   final Datum datum;
 
-  RecipesDisplay({
-    Key? key,
-    required this.datum,
-  }) : super(key: key);
+  RecipesDisplay({required this.datum});
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +17,30 @@ class RecipesDisplay extends StatelessWidget {
             itemCount: datum.hits.length,
             itemBuilder: (context, index) {
               return InkWell(
-                child: ListTile(
-                  leading: Image.network(
-                    datum.hits[index].recipe.image,
-                    errorBuilder: (context, object, trace) {
-                      return Hero(
-                        tag: datum.hits[index],
-                        child: Image.asset('assets/images/splash_image.jpg'),
-                      );
-                    },
+                child: Card(
+                  child: ListTile(
+                    leading: Image.network(
+                      datum.hits[index].recipe.image,
+                      errorBuilder: (context, object, trace) {
+                        return Hero(
+                          tag: datum.hits[index],
+                          child: Image.asset('assets/images/splash_image.jpg'),
+                        );
+                      },
+                    ),
+                    title: Text(datum.hits[index].recipe.label),
+                    subtitle: Text(
+                      datum.hits[index].recipe.calories.toString(),
+                    ),
                   ),
-                  title: Text(datum.hits[index].recipe.label),
-                  subtitle: Text(datum.hits[index].recipe.calories.toString()),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            RecipesItemPage(hit: datum.hits[index])),
+                      builder: (context) =>
+                          RecipesItemPage(hit: datum.hits[index]),
+                    ),
                   );
                 },
               );

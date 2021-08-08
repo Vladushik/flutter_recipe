@@ -27,12 +27,9 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
   }
 
   Future<DatumModel> _getRecipesFromUrl(String url) async {
-    final http.Response response = await client.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    final urlka = Uri.parse(url);
+    final response = await client.get(urlka);
+
     if (response.statusCode == 200) {
       return DatumModel.fromJson(json.decode(response.body));
     } else {
@@ -42,9 +39,12 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
 
   Future<void> saveRecipes(Datum datum) async {
     await Firebase.initializeApp();
+
     await deleteAllDocuments();
+
     CollectionReference recipe =
         FirebaseFirestore.instance.collection('Recipes');
+
     datum.hits.forEach((element) {
       recipe.add(element.recipe.toDB());
     });

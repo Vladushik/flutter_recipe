@@ -1,7 +1,6 @@
 import 'package:flutter_recipe/core/usecases/usecase.dart';
 import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 import 'package:flutter_recipe/features/recipes/domain/repositories/recipes_repository.dart';
-import 'package:flutter_recipe/features/recipes/domain/usecases/get_recipes.dart';
 
 class SaveRecipes implements UseCase<void, Datum> {
   final RecipesRepository repository;
@@ -10,6 +9,7 @@ class SaveRecipes implements UseCase<void, Datum> {
 
   @override
   Future<void> call(Datum datum) async {
+    print('asdsadfvvvv');
     await repository.saveRecipes(datum);
   }
 }

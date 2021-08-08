@@ -23,7 +23,7 @@ class RecipesItemPage extends StatelessWidget {
             stretch: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
-                tag: hit,
+                tag: hit.recipe,
                 child: Image.network(
                   hit.recipe.image,
                   fit: BoxFit.cover,
