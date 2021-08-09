@@ -14,21 +14,21 @@ abstract class RecipesRemoteDataSource {
 }
 
 class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
-  final http.Client client;
-
   RecipesRemoteDataSourceImpl({required this.client});
+
+  final http.Client client;
 
   @override
   Future<DatumModel> getRecipes(String name) {
-    const APP_ID = '8a656bb0';
-    const APP_KEY = 'c1eabfef7f90d260dc55ee79e9320acb';
+    const String APP_ID = '8a656bb0';
+    const String APP_KEY = 'c1eabfef7f90d260dc55ee79e9320acb';
     return _getRecipesFromUrl(
         'https://api.edamam.com/search?q=$name&app_id=$APP_ID&app_key=$APP_KEY');
   }
 
   Future<DatumModel> _getRecipesFromUrl(String url) async {
-    final urlka = Uri.parse(url);
-    final response = await client.get(urlka);
+    final Uri uri = Uri.parse(url);
+    final http.Response response = await client.get(uri);
 
     if (response.statusCode == 200) {
       return DatumModel.fromJson(json.decode(response.body));
@@ -37,15 +37,16 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
     }
   }
 
+  @override
   Future<void> saveRecipes(Datum datum) async {
     await Firebase.initializeApp();
 
     await deleteAllDocuments();
 
-    CollectionReference recipe =
+    final CollectionReference<Map<String, dynamic>> recipe =
         FirebaseFirestore.instance.collection('Recipes');
 
-    datum.hits.forEach((element) {
+    datum.hits.forEach((Hit element) {
       recipe.add(element.recipe.toDB());
     });
 
@@ -53,8 +54,9 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
   }
 
   Future<void> deleteAllDocuments() async {
-    final db = await FirebaseFirestore.instance.collection('Recipes').get();
-    db.docs.forEach((element) {
+    final QuerySnapshot<Map<String, dynamic>> db =
+        await FirebaseFirestore.instance.collection('Recipes').get();
+    db.docs.forEach((QueryDocumentSnapshot<Map<String, dynamic>> element) {
       element.reference.delete();
     });
     return;
@@ -63,16 +65,17 @@ class RecipesRemoteDataSourceImpl implements RecipesRemoteDataSource {
   @override
   Future<List<RecipeItem>> readRecipes() async {
     await Firebase.initializeApp();
-    final db = await FirebaseFirestore.instance.collection('Recipes').get();
+    final QuerySnapshot<Map<String, dynamic>> db =
+        await FirebaseFirestore.instance.collection('Recipes').get();
 
-    final result = await db.docs;
-    final temp = [];
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> result = db.docs;
+    final List<Map<String, dynamic>> temp = <Map<String, dynamic>>[];
 
-    result.forEach((element) {
+    result.forEach((QueryDocumentSnapshot<Map<String, dynamic>> element) {
       temp.add(element.data());
     });
 
-    return temp.map((e) => RecipeItem.fromDB(e)).toList();
+    return temp.map((Map<String, dynamic> e) => RecipeItem.fromDB(e)).toList();
 
     // db.docs.forEach((element) {
     //  return element.reference;

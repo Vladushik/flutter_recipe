@@ -7,55 +7,60 @@ import 'package:flutter_recipe/features/recipes/domain/entities/datum.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_bloc.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_event.dart';
 import 'package:flutter_recipe/features/recipes/presentation/bloc/recipes_state.dart';
-import 'package:flutter_recipe/features/recipes/presentation/widgets/app_version.dart';
+import 'package:flutter_recipe/features/recipes/presentation/pages/app_version.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/loading_widget.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/message_display.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/recipes_controls.dart';
 import 'package:flutter_recipe/features/recipes/presentation/widgets/recipes_display.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../../../../injection_container.dart';
+
 class RecipesPage extends StatelessWidget {
   Datum datum = Datum(hits: []);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Connectivity().onConnectivityChanged,
-      builder:
-          (BuildContext context, AsyncSnapshot<ConnectivityResult> snapshot) {
-        if (snapshot != null &&
-            snapshot.hasData &&
-            snapshot.data != ConnectivityResult.none) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('recipes').tr(),
-              actions: <Widget>[
-                PopupMenuButton<int>(
-                  onSelected: (item) => onSelected(context, item),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(value: 0, child: Text('history').tr()),
-                    PopupMenuItem(value: 1, child: Text('about').tr()),
-                  ],
-                ),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: buildBody(context),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                BlocProvider.of<RecipesBloc>(context)
-                    .add(SaveRecipesData(list: datum));
-                final snackBar = SnackBar(content: Text('data_saved').tr());
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              child: Icon(Icons.save),
-            ),
-          );
-        } else {
-          return RecipesPageNoInternet();
-        }
-      },
+    return BlocProvider<RecipesBloc>(
+      create: (_) => sl<RecipesBloc>(),
+      child: StreamBuilder(
+        stream: Connectivity().onConnectivityChanged,
+        builder:
+            (BuildContext context, AsyncSnapshot<ConnectivityResult> snapshot) {
+          if (snapshot != null &&
+              snapshot.hasData &&
+              snapshot.data != ConnectivityResult.none) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('recipes').tr(),
+                actions: <Widget>[
+                  PopupMenuButton<int>(
+                    onSelected: (item) => onSelected(context, item),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(value: 0, child: Text('history').tr()),
+                      PopupMenuItem(value: 1, child: Text('about').tr()),
+                    ],
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: buildBody(context),
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  BlocProvider.of<RecipesBloc>(context)
+                      .add(SaveRecipesData(list: datum));
+                  final snackBar = SnackBar(content: Text('data_saved').tr());
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+                child: Icon(Icons.save),
+              ),
+            );
+          } else {
+            return RecipesPageNoInternet();
+          }
+        },
+      ),
     );
   }
 
