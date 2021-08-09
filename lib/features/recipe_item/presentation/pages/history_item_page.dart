@@ -31,19 +31,19 @@ class HistoryItemPage extends StatelessWidget {
               ),
             ),
           ),
-          // SliverList(
-          //   delegate: SliverChildBuilderDelegate(
-          //     (context, index) {
-          //       return Container(
-          //         height: 50,
-          //         alignment: Alignment.center,
-          //         color: Colors.orange[100 * (index % 9)],
-          //         child: Text(recipeItem.ingredientLines[index]),
-          //       );
-          //     },
-          //     childCount: recipeItem.ingredientLines.length,
-          //   ),
-          // ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Container(
+                  height: 50,
+                  alignment: Alignment.center,
+                  color: Colors.orange[100 * (index % 9)],
+                  child: Text(recipeItem.ingredientLines[index]),
+                );
+              },
+              childCount: recipeItem.ingredientLines.length,
+            ),
+          ),
         ],
       ),
     );

@@ -23,8 +23,7 @@ class _RecipesControlsState extends State<RecipesControls> {
     return Column(
       children: <Widget>[
         TextField(
-          autofocus: false,
-          //  focusNode: FocusNode(descendantsAreFocusable: false),
+          focusNode: FocusNode(descendantsAreFocusable: false),
           controller: controller,
           decoration: InputDecoration(
             border: OutlineInputBorder(),

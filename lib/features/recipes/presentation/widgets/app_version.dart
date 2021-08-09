@@ -1,38 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AppVersionPage extends StatefulWidget {
-  const AppVersionPage({Key? key}) : super(key: key);
-
-  @override
-  _AppVersionPageState createState() => _AppVersionPageState();
-}
-
-class _AppVersionPageState extends State<AppVersionPage> {
-  @override
-  void initState() {
-    getAppVersion();
-    super.initState();
-  }
-
+class AppVersionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(_textAppVersion),
-          ],
-        ),
+      body: FutureBuilder(
+        future: getAppVersion(),
+        builder: (BuildContext context, snapshot) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(snapshot.data!.toString()),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  String _textAppVersion = 'Unknown battery level.';
   static const platform = MethodChannel('samples.flutter.dev/app_version');
 
-  Future<void> getAppVersion() async {
+  Future<String> getAppVersion() async {
     String _appVersion = 'Unknown app version.';
 
     try {
@@ -42,8 +33,6 @@ class _AppVersionPageState extends State<AppVersionPage> {
       _appVersion = "Failed to get app version: '${e.message}'.";
     }
 
-    setState(() {
-      _textAppVersion = _appVersion;
-    });
+    return _appVersion;
   }
 }
